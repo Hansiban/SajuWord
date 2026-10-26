@@ -1,0 +1,2621 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>천간·지지 오행 암기 | 음양오행 반복 학습</title>
+  <meta name="description" content="천간(10자)·지지(12자)의 음양과 오행을 플래시카드와 퀴즈로 빠르게 암기하는 모바일 웹앱">
+  <meta name="theme-color" content="#090d16">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="천간지지">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
+  <style>
+    /* ----------------------------------------------------
+       Design System & Variables
+       ---------------------------------------------------- */
+    :root {
+      --bg-primary: #090d16;
+      --bg-surface: #111827;
+      --bg-surface-elevated: #1f2937;
+      --bg-glass: rgba(17, 24, 39, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.18);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      /* Primary Brand & Accents */
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-glow: rgba(99, 102, 241, 0.35);
+
+      /* Five Elements (오행 색상) */
+      --elem-wood: #10b981;        /* 목 - 청/초록 */
+      --elem-wood-bg: rgba(16, 185, 129, 0.16);
+      --elem-wood-border: #10b981;
+      --elem-wood-glow: rgba(16, 185, 129, 0.35);
+
+      --elem-fire: #f43f5e;        /* 화 - 적/빨강 */
+      --elem-fire-bg: rgba(244, 63, 94, 0.16);
+      --elem-fire-border: #f43f5e;
+      --elem-fire-glow: rgba(244, 63, 94, 0.35);
+
+      --elem-earth: #f59e0b;       /* 토 - 황/황토 */
+      --elem-earth-bg: rgba(245, 158, 11, 0.16);
+      --elem-earth-border: #f59e0b;
+      --elem-earth-glow: rgba(245, 158, 11, 0.35);
+
+      --elem-metal: #cbd5e1;       /* 금 - 백/은백색 */
+      --elem-metal-bg: rgba(203, 213, 225, 0.16);
+      --elem-metal-border: #94a3b8;
+      --elem-metal-glow: rgba(203, 213, 225, 0.35);
+
+      --elem-water: #3b82f6;       /* 수 - 흑/남/파랑 */
+      --elem-water-bg: rgba(59, 130, 246, 0.16);
+      --elem-water-border: #3b82f6;
+      --elem-water-glow: rgba(59, 130, 246, 0.35);
+
+      /* Yin-Yang (음양 색상) */
+      --color-yang: #f87171;
+      --color-yang-bg: rgba(248, 113, 113, 0.15);
+      --color-yin: #60a5fa;
+      --color-yin-bg: rgba(96, 165, 250, 0.15);
+
+      --correct-color: #22c55e;
+      --correct-bg: rgba(34, 197, 94, 0.15);
+      --wrong-color: #ef4444;
+      --wrong-bg: rgba(239, 68, 68, 0.15);
+
+      --font-hanja: "Noto Serif KR", "Batang", "Songti SC", "SimSun", serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Segoe UI", Roboto, sans-serif;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--border-subtle);
+    }
+
+    /* Light Theme Support */
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #f1f5f9;
+      --bg-glass: rgba(255, 255, 255, 0.9);
+      --border-subtle: rgba(0, 0, 0, 0.08);
+      --border-hover: rgba(0, 0, 0, 0.18);
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--border-subtle);
+      --elem-metal: #475569;
+      --elem-metal-border: #64748b;
+      --elem-metal-bg: rgba(100, 116, 139, 0.12);
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --bg-primary: #f8fafc;
+        --bg-surface: #ffffff;
+        --bg-surface-elevated: #f1f5f9;
+        --bg-glass: rgba(255, 255, 255, 0.9);
+        --border-subtle: rgba(0, 0, 0, 0.08);
+        --border-hover: rgba(0, 0, 0, 0.18);
+        --text-main: #0f172a;
+        --text-muted: #475569;
+        --text-dim: #94a3b8;
+        --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--border-subtle);
+        --elem-metal: #475569;
+        --elem-metal-border: #64748b;
+        --elem-metal-bg: rgba(100, 116, 139, 0.12);
+      }
+    }
+
+    /* ----------------------------------------------------
+       Base Resets & Global Styles
+       ---------------------------------------------------- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.5;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      touch-action: manipulation;
+    }
+
+    /* Mobile Container: 360px ~ 430px base, max 480px */
+    #app {
+      width: 100%;
+      max-width: 460px;
+      min-height: 100vh;
+      background-color: var(--bg-primary);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Views */
+    .view {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      padding: 16px;
+      padding-top: calc(16px + env(safe-area-inset-top, 0px));
+      padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+      animation: fadeIn 0.22s ease-out;
+    }
+
+    .view.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ----------------------------------------------------
+       Header & Common UI
+       ---------------------------------------------------- */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      min-height: 44px;
+    }
+
+    .header-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-icon-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .header-icon-btn:active {
+      transform: scale(0.92);
+      background: var(--bg-surface-elevated);
+    }
+
+    .btn {
+      min-height: 48px;
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: none;
+      transition: all 0.15s ease;
+      padding: 0 16px;
+      touch-action: manipulation;
+    }
+
+    .btn:active:not(:disabled) {
+      transform: scale(0.97);
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #ffffff;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .btn-secondary {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--border-hover);
+    }
+
+    .btn-danger {
+      background: var(--wrong-bg);
+      color: var(--wrong-color);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    /* ----------------------------------------------------
+       Home View Elements
+       ---------------------------------------------------- */
+    .brand-hero {
+      text-align: center;
+      padding: 12px 0 20px 0;
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      color: #818cf8;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .brand-title {
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .brand-desc {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    /* Scope Switcher */
+    .scope-selector {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      background: var(--bg-surface);
+      padding: 5px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 16px;
+    }
+
+    .scope-btn {
+      min-height: 42px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .scope-btn.active {
+      background: var(--bg-surface-elevated);
+      color: var(--text-main);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    [data-theme="light"] .scope-btn.active {
+      background: #ffffff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .scope-badge-count {
+      font-size: 0.72rem;
+      padding: 1px 6px;
+      border-radius: 10px;
+      background: var(--border-subtle);
+    }
+
+    /* Quick Dashboard Stats */
+    .dashboard-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .stat-pill {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 12px 10px;
+      text-align: center;
+    }
+
+    .stat-pill-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .stat-pill-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* Mode Action Cards */
+    .mode-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .mode-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 18px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+      min-height: 76px;
+    }
+
+    .mode-card:active {
+      transform: scale(0.98);
+      border-color: var(--border-hover);
+    }
+
+    .mode-card-primary {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(79, 70, 229, 0.05));
+      border: 1px solid rgba(99, 102, 241, 0.35);
+    }
+
+    .mode-card-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .mode-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      background: var(--bg-surface-elevated);
+      flex-shrink: 0;
+    }
+
+    .mode-card-primary .mode-icon {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .mode-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .mode-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .mode-arrow {
+      color: var(--text-dim);
+      font-size: 1.2rem;
+      font-weight: 700;
+      padding-left: 6px;
+    }
+
+    .mode-badge {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      background: var(--wrong-bg);
+      color: var(--wrong-color);
+      font-weight: 600;
+    }
+
+    /* ----------------------------------------------------
+       Flashcard View (카드 학습)
+       ---------------------------------------------------- */
+    .card-scene {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      perspective: 1000px;
+      margin: 12px 0 20px 0;
+      min-height: 350px;
+    }
+
+    .flashcard {
+      width: 100%;
+      height: 100%;
+      min-height: 360px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+    }
+
+    .flashcard.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .flashcard-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: var(--radius-lg);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 20px;
+      text-align: center;
+    }
+
+    .flashcard-back {
+      transform: rotateY(180deg);
+      background: var(--bg-surface);
+    }
+
+    .card-hanja {
+      font-family: var(--font-hanja);
+      font-size: clamp(96px, 25vw, 120px);
+      line-height: 1;
+      font-weight: 700;
+      margin: auto 0;
+      color: var(--text-main);
+      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-top-tag {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .card-hint {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Card Back Details */
+    .back-reading {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .back-reading-sub {
+      font-size: 1.2rem;
+      font-family: var(--font-hanja);
+      color: var(--text-muted);
+    }
+
+    .back-badges {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 16px;
+      width: 100%;
+    }
+
+    .badge-pill {
+      flex: 1;
+      max-width: 140px;
+      min-height: 48px;
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .badge-pill-label {
+      font-size: 0.68rem;
+      opacity: 0.75;
+      margin-bottom: 2px;
+    }
+
+    .badge-pill-value {
+      font-size: 1.05rem;
+    }
+
+    .badge-yang {
+      background: var(--color-yang-bg);
+      color: var(--color-yang);
+      border-color: rgba(248, 113, 113, 0.35);
+    }
+
+    .badge-yin {
+      background: var(--color-yin-bg);
+      color: var(--color-yin);
+      border-color: rgba(96, 165, 250, 0.35);
+    }
+
+    .back-details-box {
+      width: 100%;
+      background: var(--bg-surface-elevated);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .card-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: auto;
+    }
+
+    .card-nav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      padding: 0 4px;
+    }
+
+    .btn-know {
+      background: var(--correct-bg);
+      color: var(--correct-color);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+    }
+
+    .btn-dontknow {
+      background: var(--wrong-bg);
+      color: var(--wrong-color);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    /* ----------------------------------------------------
+       Quiz View (퀴즈 모드 - 핵심)
+       ---------------------------------------------------- */
+    .quiz-progress-bar {
+      width: 100%;
+      height: 6px;
+      background: var(--bg-surface-elevated);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #6366f1, #10b981);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .quiz-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--card-shadow);
+      padding: 24px 16px;
+      text-align: center;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .quiz-prompt {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .quiz-hanja {
+      font-family: var(--font-hanja);
+      font-size: clamp(96px, 24vw, 114px);
+      line-height: 1.1;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 8px 0;
+      text-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    .quiz-feedback-box {
+      display: none;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      font-size: 0.92rem;
+      font-weight: 600;
+      margin-top: 8px;
+      animation: fadeIn 0.15s ease-out;
+    }
+
+    .quiz-feedback-box.correct {
+      display: block;
+      background: var(--correct-bg);
+      color: var(--correct-color);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .quiz-feedback-box.wrong {
+      display: block;
+      background: var(--wrong-bg);
+      color: var(--wrong-color);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    /* Quiz Option Buttons */
+    .quiz-options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: auto;
+    }
+
+    .option-group-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .yinyang-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .elements-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+    }
+
+    .reading-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .reading-row .choice-btn {
+      min-height: 48px;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .reading-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .choice-btn {
+      min-height: 50px;
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .choice-btn:active {
+      transform: scale(0.96);
+    }
+
+    .choice-btn.selected {
+      border-color: var(--primary);
+      background: rgba(99, 102, 241, 0.18);
+      color: #ffffff;
+      box-shadow: 0 0 12px var(--primary-glow);
+    }
+
+    [data-theme="light"] .choice-btn.selected {
+      color: var(--primary);
+      background: rgba(99, 102, 241, 0.1);
+    }
+
+    /* Element Button Specific Styles */
+    .elem-btn {
+      font-size: 0.95rem;
+      padding: 4px 2px;
+    }
+
+    .elem-btn-sub {
+      font-size: 0.7rem;
+      font-weight: 500;
+      opacity: 0.85;
+    }
+
+    .elem-btn[data-elem="목"].selected {
+      border-color: var(--elem-wood);
+      background: var(--elem-wood-bg);
+      color: var(--elem-wood);
+    }
+
+    .elem-btn[data-elem="화"].selected {
+      border-color: var(--elem-fire);
+      background: var(--elem-fire-bg);
+      color: var(--elem-fire);
+    }
+
+    .elem-btn[data-elem="토"].selected {
+      border-color: var(--elem-earth);
+      background: var(--elem-earth-bg);
+      color: var(--elem-earth);
+    }
+
+    .elem-btn[data-elem="금"].selected {
+      border-color: var(--elem-metal);
+      background: var(--elem-metal-bg);
+      color: var(--elem-metal);
+    }
+
+    .elem-btn[data-elem="수"].selected {
+      border-color: var(--elem-water);
+      background: var(--elem-water-bg);
+      color: var(--elem-water);
+    }
+
+    /* Answer Verification States */
+    .choice-btn.is-correct {
+      border-color: var(--correct-color) !important;
+      background: var(--correct-bg) !important;
+      color: var(--correct-color) !important;
+    }
+
+    .choice-btn.is-wrong {
+      border-color: var(--wrong-color) !important;
+      background: var(--wrong-bg) !important;
+      color: var(--wrong-color) !important;
+    }
+
+    /* ----------------------------------------------------
+       Stats & Review Elements
+       ---------------------------------------------------- */
+    .stats-table-wrapper {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .stats-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    .stats-table th {
+      background: var(--bg-surface-elevated);
+      color: var(--text-muted);
+      padding: 10px 12px;
+      font-weight: 600;
+      font-size: 0.78rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .stats-table td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .stats-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .hanja-cell {
+      font-family: var(--font-hanja);
+      font-size: 1.4rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .leitner-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
+    .leitner-0 { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+    .leitner-1 { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    .leitner-2 { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+    .leitner-3 { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: var(--card-shadow);
+      animation: modalPop 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes modalPop {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .modal-desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .modal-buttons .btn {
+      flex: 1;
+    }
+
+    /* Settings Form Rows */
+    .settings-group {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      min-height: 52px;
+    }
+
+    .settings-row:last-child {
+      border-bottom: none;
+    }
+
+    .settings-label {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .settings-sublabel {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    select.settings-select {
+      background: var(--bg-surface-elevated);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      outline: none;
+      min-width: 130px;
+    }
+
+    /* Switch toggle */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 28px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      transition: .25s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .25s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    /* Quick Reference Table in Modal */
+    .ref-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .ref-card {
+      background: var(--bg-surface-elevated);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .ref-hanja {
+      font-family: var(--font-hanja);
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+
+    .ref-meta {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+
+    <!-- ==========================================
+         VIEW 1: HOME (홈 화면)
+         ========================================== -->
+    <section id="view-home" class="view active">
+      <!-- Header -->
+      <div class="header">
+        <div class="header-title">
+          <span>☯️</span>
+          <span>천간·지지 암기</span>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="header-icon-btn" id="btn-open-ref" title="오행 일람표">
+            📖
+          </button>
+          <button class="header-icon-btn" id="btn-open-stats" title="통계">
+            📊
+          </button>
+          <button class="header-icon-btn" id="btn-open-settings" title="설정">
+            ⚙️
+          </button>
+        </div>
+      </div>
+
+      <!-- Hero Banner -->
+      <div class="brand-hero">
+        <div class="brand-badge">
+          <span>모바일 최적화</span> • <span>오프라인 지원</span>
+        </div>
+        <h1 class="brand-title">음양과 오행을<br>단어처럼 외우다</h1>
+        <p class="brand-desc">하루 3분, 천간 10자와 지지 12자 완전 정복</p>
+      </div>
+
+      <!-- Scope Selector -->
+      <div class="scope-selector" id="scope-selector">
+        <button class="scope-btn active" data-scope="all">
+          전체 <span class="scope-badge-count">22</span>
+        </button>
+        <button class="scope-btn" data-scope="tiangan">
+          천간 <span class="scope-badge-count">10</span>
+        </button>
+        <button class="scope-btn" data-scope="diji">
+          지지 <span class="scope-badge-count">12</span>
+        </button>
+      </div>
+
+      <!-- Quick Dashboard Stats -->
+      <div class="dashboard-stats">
+        <div class="stat-pill">
+          <div class="stat-pill-label">오늘 푼 문제</div>
+          <div class="stat-pill-value" id="dash-today-count">0</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-pill-label">전체 정답률</div>
+          <div class="stat-pill-value" id="dash-accuracy">0%</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-pill-label">암기 완료</div>
+          <div class="stat-pill-value" id="dash-mastered">0/22</div>
+        </div>
+      </div>
+
+      <!-- Mode Cards -->
+      <div class="mode-cards">
+        <!-- 퀴즈 모드 (핵심) -->
+        <div class="mode-card mode-card-primary" id="btn-start-quiz">
+          <div class="mode-card-left">
+            <div class="mode-icon">⚡</div>
+            <div>
+              <div class="mode-title">퀴즈 모드</div>
+              <div class="mode-desc">음독·음양·오행 3가지 한 번에 맞추기</div>
+            </div>
+          </div>
+          <div class="mode-arrow">➔</div>
+        </div>
+
+        <!-- 카드 학습 -->
+        <div class="mode-card" id="btn-start-card">
+          <div class="mode-card-left">
+            <div class="mode-icon">🎴</div>
+            <div>
+              <div class="mode-title">카드 학습</div>
+              <div class="mode-desc">플래시카드로 한 자씩 넘겨보며 암기</div>
+            </div>
+          </div>
+          <div class="mode-arrow">➔</div>
+        </div>
+
+        <!-- 오답 복습 (Leitner) -->
+        <div class="mode-card" id="btn-start-review">
+          <div class="mode-card-left">
+            <div class="mode-icon">🔄</div>
+            <div>
+              <div class="mode-title" style="display:flex; align-items:center; gap:6px;">
+                오답 복습
+                <span class="mode-badge" id="dash-review-badge">0개</span>
+              </div>
+              <div class="mode-desc">자주 틀리는 취약 글자 집중 훈련</div>
+            </div>
+          </div>
+          <div class="mode-arrow">➔</div>
+        </div>
+      </div>
+
+      <!-- PWA Install Prompt (if available) -->
+      <button class="btn btn-secondary" id="btn-pwa-install" style="display: none; width: 100%; margin-top: auto;">
+        📲 홈 화면에 앱 추가하기
+      </button>
+    </section>
+
+
+    <!-- ==========================================
+         VIEW 2: CARD FLASHCARD (카드 학습 모드)
+         ========================================== -->
+    <section id="view-card" class="view">
+      <!-- Header -->
+      <div class="header">
+        <button class="header-icon-btn btn-back-home" title="홈으로">
+          ‹
+        </button>
+        <div class="header-title" id="card-header-scope">
+          카드 학습
+        </div>
+        <button class="header-icon-btn" id="btn-card-shuffle" title="순서 섞기">
+          🔀
+        </button>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-muted); padding: 0 4px 6px;">
+        <span id="card-counter">1 / 22</span>
+        <span style="font-size: 0.75rem;">카드 탭 시 뒤집힘</span>
+      </div>
+
+      <!-- 3D Flipping Card Scene -->
+      <div class="card-scene">
+        <div class="flashcard" id="flashcard">
+          <!-- Card Front -->
+          <div class="flashcard-face flashcard-front">
+            <span class="card-top-tag" id="card-front-tag">천간 · 1번째</span>
+            <div class="card-hanja" id="card-front-hanja">甲</div>
+            <div class="card-hint">
+              <span>탭하여 음양·오행 확인 🔄</span>
+            </div>
+          </div>
+
+          <!-- Card Back -->
+          <div class="flashcard-face flashcard-back">
+            <span class="card-top-tag" id="card-back-tag">천간</span>
+            
+            <div style="margin: auto 0; width: 100%;">
+              <div class="back-reading">
+                <span id="card-back-hanja" style="font-family: var(--font-hanja); color: var(--text-main);">甲</span>
+                <span id="card-back-reading" style="color: var(--primary);">갑</span>
+              </div>
+
+              <div class="back-badges">
+                <div class="badge-pill" id="card-badge-yinyang">
+                  <span class="badge-pill-label">음양</span>
+                  <span class="badge-pill-value" id="card-text-yinyang">양 (陽)</span>
+                </div>
+                <div class="badge-pill" id="card-badge-element">
+                  <span class="badge-pill-label">오행</span>
+                  <span class="badge-pill-value" id="card-text-element">목 (木)</span>
+                </div>
+              </div>
+
+              <div class="back-details-box" id="card-details-box">
+                목(木)의 기운: 솟구치는 생명력, 큰 나무
+              </div>
+            </div>
+
+            <div class="card-hint">
+              <span>좌우로 스와이프하여 넘기기</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rating Buttons (몰라요 / 알아요) -->
+      <div class="card-controls">
+        <button class="btn btn-dontknow" id="btn-card-dontknow">
+          ❌ 몰라요 (복습)
+        </button>
+        <button class="btn btn-know" id="btn-card-know">
+          ⭕ 알아요 (통과)
+        </button>
+      </div>
+
+      <!-- Previous / Next row -->
+      <div class="card-nav-row">
+        <button class="btn btn-secondary" id="btn-card-prev" style="min-height: 40px; padding: 0 14px; font-size: 0.88rem;">
+          ‹ 이전
+        </button>
+        <button class="btn btn-secondary" id="btn-card-flip" style="min-height: 40px; padding: 0 16px; font-size: 0.88rem;">
+          뒤집기 🔄
+        </button>
+        <button class="btn btn-secondary" id="btn-card-next" style="min-height: 40px; padding: 0 14px; font-size: 0.88rem;">
+          다음 ›
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ==========================================
+         VIEW 3: QUIZ (퀴즈 모드 - 핵심)
+         ========================================== -->
+    <section id="view-quiz" class="view">
+      <!-- Header -->
+      <div class="header">
+        <button class="header-icon-btn" id="btn-quiz-exit" title="나가기">
+          ✕
+        </button>
+        <div class="header-title" id="quiz-header-title">
+          퀴즈 <span id="quiz-counter" style="color: var(--primary); font-size: 0.95rem;">(1/20)</span>
+        </div>
+        <div style="font-size: 0.85rem; font-weight: 700; color: var(--correct-color);" id="quiz-live-score">
+          0점
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="quiz-progress-bar">
+        <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+      </div>
+
+      <!-- Quiz Question Card -->
+      <div class="quiz-card">
+        <div class="quiz-prompt" id="quiz-prompt-text">
+          음양과 오행을 모두 선택하세요
+        </div>
+        <div class="quiz-hanja" id="quiz-question-hanja">
+          甲
+        </div>
+        <div class="quiz-feedback-box" id="quiz-feedback-box">
+          정답입니다! 🎉
+        </div>
+      </div>
+
+      <!-- Dynamic Answer Controls Container -->
+      <div class="quiz-options-container" id="quiz-options-container">
+        <!-- Will be populated according to quizType: both / element / yinyang / reading -->
+      </div>
+
+      <!-- Quiz Action Controls (Submit / Next) -->
+      <div style="margin-top: 12px;">
+        <button class="btn btn-primary" id="btn-quiz-submit" style="width: 100%; min-height: 52px;" disabled>
+          정답 확인
+        </button>
+        <button class="btn btn-primary" id="btn-quiz-next" style="width: 100%; min-height: 52px; display: none;">
+          다음 문제 ➔
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ==========================================
+         VIEW 4: QUIZ RESULT (퀴즈 결과 화면)
+         ========================================== -->
+    <section id="view-result" class="view">
+      <div class="header">
+        <div class="header-title">퀴즈 완료 🎉</div>
+        <button class="header-icon-btn btn-back-home" title="홈으로">✕</button>
+      </div>
+
+      <div style="text-align: center; padding: 20px 0;">
+        <div style="font-size: 3.5rem; margin-bottom: 6px;" id="result-icon">🏆</div>
+        <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 6px;" id="result-score-title">20 / 20</h2>
+        <p style="color: var(--text-muted); font-size: 0.92rem;" id="result-score-msg">완벽합니다! 음양오행의 달인이시네요!</p>
+      </div>
+
+      <!-- Missed Questions List -->
+      <div style="flex: 1; overflow-y: auto; margin-bottom: 16px;">
+        <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;" id="result-missed-header">
+          틀린 글자 다시보기
+        </div>
+        <div id="result-missed-list" style="display: flex; flex-direction: column; gap: 8px;">
+          <!-- Items inserted here -->
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-top: auto;">
+        <button class="btn btn-primary" id="btn-result-retry-missed" style="width: 100%;">
+          🔄 틀린 글자만 다시 풀기
+        </button>
+        <button class="btn btn-secondary" id="btn-result-new-quiz" style="width: 100%;">
+          ⚡ 새 퀴즈 시작하기
+        </button>
+        <button class="btn btn-secondary btn-back-home" style="width: 100%;">
+          🏠 홈으로 돌아가기
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ==========================================
+         VIEW 5: STATS (통계 화면)
+         ========================================== -->
+    <section id="view-stats" class="view">
+      <div class="header">
+        <button class="header-icon-btn btn-back-home" title="뒤로가기">‹</button>
+        <div class="header-title">학습 통계</div>
+        <div style="width: 44px;"></div>
+      </div>
+
+      <!-- Stats Overview Cards -->
+      <div class="dashboard-stats" style="margin-bottom: 16px;">
+        <div class="stat-pill">
+          <div class="stat-pill-label">총 푼 문제</div>
+          <div class="stat-pill-value" id="stats-total-solved">0</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-pill-label">정답률</div>
+          <div class="stat-pill-value" id="stats-total-rate">0%</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-pill-label">완전 암기</div>
+          <div class="stat-pill-value" id="stats-mastered-count">0/22</div>
+        </div>
+      </div>
+
+      <!-- Most Missed TOP 5 -->
+      <div style="margin-bottom: 20px;">
+        <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+          <span>자주 틀리는 글자 TOP 5</span>
+          <span style="font-size: 0.75rem; color: var(--text-dim);">오답 수 기준</span>
+        </div>
+        <div id="stats-top-missed-list" style="display: flex; flex-direction: column; gap: 6px;">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <!-- Character Status Table -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <div style="font-size: 0.9rem; font-weight: 700;">전체 글자별 숙련도</div>
+        <div style="display: flex; gap: 4px;">
+          <button class="btn btn-secondary" id="stats-filter-all" style="min-height: 32px; padding: 0 8px; font-size: 0.75rem;">전체</button>
+          <button class="btn btn-secondary" id="stats-filter-tiangan" style="min-height: 32px; padding: 0 8px; font-size: 0.75rem;">천간</button>
+          <button class="btn btn-secondary" id="stats-filter-diji" style="min-height: 32px; padding: 0 8px; font-size: 0.75rem;">지지</button>
+        </div>
+      </div>
+
+      <div class="stats-table-wrapper" style="max-height: 300px; overflow-y: auto;">
+        <table class="stats-table">
+          <thead>
+            <tr>
+              <th>한자</th>
+              <th>음양/오행</th>
+              <th>정답률</th>
+              <th>단계</th>
+            </tr>
+          </thead>
+          <tbody id="stats-table-body">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Reset Data Button -->
+      <button class="btn btn-danger" id="btn-reset-data" style="width: 100%; margin-top: auto;">
+        🗑️ 학습 기록 초기화
+      </button>
+    </section>
+
+
+    <!-- ==========================================
+         VIEW 6: SETTINGS (설정 화면)
+         ========================================== -->
+    <section id="view-settings" class="view">
+      <div class="header">
+        <button class="header-icon-btn btn-back-home" title="뒤로가기">‹</button>
+        <div class="header-title">앱 설정</div>
+        <div style="width: 44px;"></div>
+      </div>
+
+      <div class="settings-group">
+        <div class="settings-row">
+          <div>
+            <div class="settings-label">한 세션 문제 수</div>
+            <div class="settings-sublabel">한 번에 풀 문제의 수</div>
+          </div>
+          <select class="settings-select" id="setting-session-size">
+            <option value="10">10 문제</option>
+            <option value="20">20 문제</option>
+            <option value="30">30 문제</option>
+          </select>
+        </div>
+
+        <div class="settings-row">
+          <div>
+            <div class="settings-label">화면 테마</div>
+            <div class="settings-sublabel">다크 모드 또는 라이트 모드</div>
+          </div>
+          <select class="settings-select" id="setting-theme">
+            <option value="auto">시스템 설정</option>
+            <option value="dark">다크 모드</option>
+            <option value="light">라이트 모드</option>
+          </select>
+        </div>
+
+        <div class="settings-row">
+          <div>
+            <div class="settings-label">햅틱 진동 피드백</div>
+            <div class="settings-sublabel">정답/오답 제출 시 진동 발생</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="setting-vibrate" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Required DiJi classification note -->
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px; font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; margin-top: auto;">
+        <strong style="color: var(--text-main); display: block; margin-bottom: 4px;">ℹ️ 체(體) 기준 분류 안내</strong>
+        지지의 음양은 순서상 홀수번째(자·인·진·오·신·술)를 <strong>양(陽)</strong>, 짝수번째(축·묘·사·미·유·해)를 <strong>음(陰)</strong>으로 분류하는 <strong>체(體) 기준</strong>입니다. 사주 학파에 따라 자·사·해 등이 용(用) 기준으로 다르게 분류되기도 합니다.
+      </div>
+    </section>
+
+  </div><!-- /#app -->
+
+
+  <!-- ==========================================
+       MODALS: Reset Confirm & Reference Table
+       ========================================== -->
+  <!-- Reset Confirmation Modal -->
+  <div class="modal-overlay" id="modal-reset-confirm">
+    <div class="modal-content">
+      <div class="modal-title">학습 기록 초기화</div>
+      <div class="modal-desc">
+        지금까지 학습한 모든 정답률, 숙련도 단계, 오늘의 문제 수가 영구히 삭제됩니다. 정말 초기화하시겠습니까?
+      </div>
+      <div class="modal-buttons">
+        <button class="btn btn-secondary" id="btn-modal-cancel">취소</button>
+        <button class="btn btn-danger" id="btn-modal-confirm">초기화</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reference Sheet Modal -->
+  <div class="modal-overlay" id="modal-ref-sheet">
+    <div class="modal-content" style="max-height: 85vh; display: flex; flex-direction: column;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <div class="modal-title" style="margin-bottom: 0;">천간·지지 일람표</div>
+        <button class="header-icon-btn" id="btn-ref-close" style="width: 36px; height: 36px;">✕</button>
+      </div>
+      <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
+        목(초록) · 화(빨강) · 토(황토) · 금(은백) · 수(파랑)
+      </div>
+      <div class="ref-grid" id="ref-grid-container">
+        <!-- Rendered via JS -->
+      </div>
+      <button class="btn btn-primary" id="btn-ref-confirm" style="margin-top: 14px; width: 100%;">
+        닫기
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ==========================================
+       APPLICATION SCRIPT
+       ========================================== -->
+  <script>
+    /* ----------------------------------------------------
+       1. Base Data Specifications
+       ---------------------------------------------------- */
+    const TIANGAN = [ // 천간 (10자)
+      { hanja: "甲", reading: "갑", yinyang: "양", element: "목" },
+      { hanja: "乙", reading: "을", yinyang: "음", element: "목" },
+      { hanja: "丙", reading: "병", yinyang: "양", element: "화" },
+      { hanja: "丁", reading: "정", yinyang: "음", element: "화" },
+      { hanja: "戊", reading: "무", yinyang: "양", element: "토" },
+      { hanja: "己", reading: "기", yinyang: "음", element: "토" },
+      { hanja: "庚", reading: "경", yinyang: "양", element: "금" },
+      { hanja: "辛", reading: "신", yinyang: "음", element: "금" },
+      { hanja: "壬", reading: "임", yinyang: "양", element: "수" },
+      { hanja: "癸", reading: "계", yinyang: "음", element: "수" },
+    ];
+
+    const DIJI = [ // 지지 (12자)
+      { hanja: "子", reading: "자", yinyang: "양", element: "수" },
+      { hanja: "丑", reading: "축", yinyang: "음", element: "토" },
+      { hanja: "寅", reading: "인", yinyang: "양", element: "목" },
+      { hanja: "卯", reading: "묘", yinyang: "음", element: "목" },
+      { hanja: "辰", reading: "진", yinyang: "양", element: "토" },
+      { hanja: "巳", reading: "사", yinyang: "음", element: "화" },
+      { hanja: "午", reading: "오", yinyang: "양", element: "화" },
+      { hanja: "未", reading: "미", yinyang: "음", element: "토" },
+      { hanja: "申", reading: "신", yinyang: "양", element: "금" },
+      { hanja: "酉", reading: "유", yinyang: "음", element: "금" },
+      { hanja: "戌", reading: "술", yinyang: "양", element: "토" },
+      { hanja: "亥", reading: "해", yinyang: "음", element: "수" },
+    ];
+
+    const ALL_ITEMS = [...TIANGAN, ...DIJI];
+
+    const ELEMENT_META = {
+      "목": { hanja: "木", name: "나무", color: "#10b981", desc: "생명력의 시작, 솟구치는 기운, 동쪽/청색" },
+      "화": { hanja: "火", name: "불",   color: "#f43f5e", desc: "확산과 열정, 밝게 타오르는 기운, 남쪽/적색" },
+      "토": { hanja: "土", name: "흙",   color: "#f59e0b", desc: "중재와 포용, 변화를 잇는 중심, 중앙/황색" },
+      "금": { hanja: "金", name: "쇠",   color: "#94a3b8", desc: "결실과 숙살, 굳세고 다듬는 기운, 서쪽/백색" },
+      "수": { hanja: "水", name: "물",   color: "#3b82f6", desc: "지혜와 저장, 유연하게 스며드는 기운, 북쪽/흑색" },
+    };
+
+    /* ----------------------------------------------------
+       2. Storage & State Management
+       ---------------------------------------------------- */
+    const STORAGE_KEY = 'sajuword_data_v1';
+
+    function getTodayKey() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const d = String(now.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function getDefaultStore() {
+      const stats = {};
+      ALL_ITEMS.forEach(item => {
+        stats[item.hanja] = { correct: 0, wrong: 0, level: 0 };
+      });
+      return {
+        stats: stats,
+        settings: {
+          quizType: "all3",
+          sessionSize: 20,
+          theme: "auto",
+          vibrate: true
+        },
+        dailyCount: {}
+      };
+    }
+
+    function loadStore() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return getDefaultStore();
+        const parsed = JSON.parse(raw);
+        // Ensure all characters exist
+        ALL_ITEMS.forEach(item => {
+          if (!parsed.stats[item.hanja]) {
+            parsed.stats[item.hanja] = { correct: 0, wrong: 0, level: 0 };
+          }
+        });
+        if (!parsed.settings) parsed.settings = {};
+        if (!parsed.settings.quizType || parsed.settings.quizType === 'both') {
+          parsed.settings.quizType = 'all3';
+        }
+        if (!parsed.dailyCount) parsed.dailyCount = {};
+        return parsed;
+      } catch (e) {
+        console.error("Storage load failed, using defaults", e);
+        return getDefaultStore();
+      }
+    }
+
+    function saveStore() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState.store));
+      } catch (e) {
+        console.error("Storage save failed", e);
+      }
+    }
+
+    /* Global App State */
+    const appState = {
+      store: loadStore(),
+      currentScope: 'all', // 'all' | 'tiangan' | 'diji'
+      
+      // Card mode state
+      cardList: [],
+      cardIndex: 0,
+      
+      // Quiz mode state
+      quizSession: [],
+      quizIndex: 0,
+      quizCorrectCount: 0,
+      quizMissedList: [],
+      currentSelectedYinYang: null,
+      currentSelectedElement: null,
+      currentSelectedReading: null,
+      quizAnswered: false,
+
+      // PWA deferred prompt
+      deferredPrompt: null
+    };
+
+    /* ----------------------------------------------------
+       3. Theme & Haptic Utilities
+       ---------------------------------------------------- */
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+    }
+
+    function triggerHaptic(type) {
+      if (!appState.store.settings.vibrate) return;
+      if (!('vibrate' in navigator)) return;
+      try {
+        if (type === 'correct') {
+          navigator.vibrate(60);
+        } else if (type === 'wrong') {
+          navigator.vibrate([140, 80, 140]);
+        } else if (type === 'tap') {
+          navigator.vibrate(20);
+        }
+      } catch (e) {}
+    }
+
+    /* ----------------------------------------------------
+       4. Navigation & Views
+       ---------------------------------------------------- */
+    function showView(viewId) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      const target = document.getElementById(viewId);
+      if (target) {
+        target.classList.add('active');
+        window.scrollTo(0, 0);
+      }
+      if (viewId === 'view-home') {
+        updateHomeDashboard();
+      }
+    }
+
+    function getItemsByScope(scope = appState.currentScope) {
+      if (scope === 'tiangan') return [...TIANGAN];
+      if (scope === 'diji') return [...DIJI];
+      return [...ALL_ITEMS];
+    }
+
+    /* ----------------------------------------------------
+       5. Home Dashboard Logic
+       ---------------------------------------------------- */
+    function updateHomeDashboard() {
+      const todayKey = getTodayKey();
+      const todayCount = appState.store.dailyCount[todayKey] || 0;
+      document.getElementById('dash-today-count').textContent = todayCount;
+
+      let totalC = 0;
+      let totalW = 0;
+      let mastered = 0;
+
+      Object.values(appState.store.stats).forEach(stat => {
+        totalC += (stat.correct || 0);
+        totalW += (stat.wrong || 0);
+        if ((stat.level || 0) >= 3) {
+          mastered++;
+        }
+      });
+
+      const totalAttempts = totalC + totalW;
+      const accuracy = totalAttempts > 0 ? Math.round((totalC / totalAttempts) * 100) : 0;
+      document.getElementById('dash-accuracy').textContent = `${accuracy}%`;
+      document.getElementById('dash-mastered').textContent = `${mastered}/22`;
+
+      // Review badge count: characters with level < 3 or wrong > 0
+      const needsReview = ALL_ITEMS.filter(item => {
+        const s = appState.store.stats[item.hanja];
+        return (s.wrong > 0 && s.level < 3) || s.level === 0;
+      }).length;
+      document.getElementById('dash-review-badge').textContent = `${needsReview}개`;
+    }
+
+    /* ----------------------------------------------------
+       6. Flashcard Mode Logic
+       ---------------------------------------------------- */
+    function startCardMode(itemsToUse) {
+      appState.cardList = itemsToUse || getItemsByScope();
+      appState.cardIndex = 0;
+      renderCurrentCard();
+      showView('view-card');
+    }
+
+    function renderCurrentCard() {
+      const card = appState.cardList[appState.cardIndex];
+      if (!card) return;
+
+      const flashcardEl = document.getElementById('flashcard');
+      flashcardEl.classList.remove('flipped');
+
+      const isTiangan = TIANGAN.some(t => t.hanja === card.hanja);
+      const scopeLabel = isTiangan ? '천간' : '지지';
+      const orderNum = (isTiangan ? TIANGAN : DIJI).findIndex(t => t.hanja === card.hanja) + 1;
+
+      // Front
+      document.getElementById('card-counter').textContent = `${appState.cardIndex + 1} / ${appState.cardList.length}`;
+      document.getElementById('card-front-tag').textContent = `${scopeLabel} · ${orderNum}번째`;
+      document.getElementById('card-front-hanja').textContent = card.hanja;
+
+      // Back
+      document.getElementById('card-back-tag').textContent = scopeLabel;
+      document.getElementById('card-back-hanja').textContent = card.hanja;
+      document.getElementById('card-back-reading').textContent = card.reading;
+
+      // Yin-Yang badge
+      const yinyangBadge = document.getElementById('card-badge-yinyang');
+      yinyangBadge.className = `badge-pill ${card.yinyang === '양' ? 'badge-yang' : 'badge-yin'}`;
+      document.getElementById('card-text-yinyang').textContent = `${card.yinyang} (${card.yinyang === '양' ? '陽' : '陰'})`;
+
+      // Element badge & color styling
+      const elemBadge = document.getElementById('card-badge-element');
+      const meta = ELEMENT_META[card.element];
+      elemBadge.className = 'badge-pill';
+      elemBadge.style.background = `rgba(${hexToRgb(meta.color)}, 0.16)`;
+      elemBadge.style.color = meta.color;
+      elemBadge.style.borderColor = `rgba(${hexToRgb(meta.color)}, 0.35)`;
+      document.getElementById('card-text-element').textContent = `${card.element} (${meta.hanja})`;
+
+      // Details box
+      document.getElementById('card-details-box').innerHTML = `
+        <strong>오행: ${card.element}(${meta.hanja}) - ${meta.name}</strong><br>
+        <span style="font-size: 0.82rem; opacity: 0.9;">${meta.desc}</span>
+      `;
+    }
+
+    function hexToRgb(hex) {
+      const bigint = parseInt(hex.replace('#', ''), 16);
+      const r = (bigint >> 16) & 255;
+      const g = (bigint >> 8) & 255;
+      const b = bigint & 255;
+      return `${r}, ${g}, ${b}`;
+    }
+
+    function flipCard() {
+      document.getElementById('flashcard').classList.toggle('flipped');
+      triggerHaptic('tap');
+    }
+
+    function rateCard(know) {
+      const current = appState.cardList[appState.cardIndex];
+      if (!current) return;
+
+      const stat = appState.store.stats[current.hanja];
+      if (know) {
+        stat.correct = (stat.correct || 0) + 1;
+        stat.level = Math.min(3, (stat.level || 0) + 1);
+        triggerHaptic('correct');
+      } else {
+        stat.wrong = (stat.wrong || 0) + 1;
+        stat.level = 0; // Reset to 0 on unknown
+        triggerHaptic('wrong');
+      }
+
+      // Record daily count
+      const todayKey = getTodayKey();
+      appState.store.dailyCount[todayKey] = (appState.store.dailyCount[todayKey] || 0) + 1;
+      saveStore();
+
+      // Advance to next card
+      if (appState.cardIndex < appState.cardList.length - 1) {
+        appState.cardIndex++;
+        renderCurrentCard();
+      } else {
+        // Finished all cards in this pass
+        alert("선택한 범위의 모든 카드를 확인했습니다! 👏");
+        showView('view-home');
+      }
+    }
+
+    /* Swipe gesture detection on card */
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const cardEl = document.getElementById('flashcard');
+
+    cardEl.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    cardEl.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].screenX;
+      const touchEndY = e.changedTouches[0].screenY;
+      const diffX = touchEndX - touchStartX;
+      const diffY = touchEndY - touchStartY;
+
+      // Check if it's a horizontal swipe
+      if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX < 0) {
+          // Swipe left -> Next
+          if (appState.cardIndex < appState.cardList.length - 1) {
+            appState.cardIndex++;
+            renderCurrentCard();
+          }
+        } else {
+          // Swipe right -> Prev
+          if (appState.cardIndex > 0) {
+            appState.cardIndex--;
+            renderCurrentCard();
+          }
+        }
+      }
+    }, { passive: true });
+
+
+    /* ----------------------------------------------------
+       7. Quiz Mode Logic (핵심 기능)
+       ---------------------------------------------------- */
+    function startQuizMode(customItems, isReviewSession = false) {
+      const pool = customItems || getItemsByScope();
+      const sessionSize = isReviewSession 
+        ? Math.min(pool.length, appState.store.settings.sessionSize || 20)
+        : (appState.store.settings.sessionSize || 20);
+
+      // Leitner weighting / random generation
+      appState.quizSession = generateQuizQuestions(pool, sessionSize, isReviewSession);
+      appState.quizIndex = 0;
+      appState.quizCorrectCount = 0;
+      appState.quizMissedList = [];
+      
+      showView('view-quiz');
+      renderCurrentQuizQuestion();
+    }
+
+    function generateQuizQuestions(pool, targetCount, prioritizeWeak) {
+      if (!pool || pool.length === 0) pool = [...ALL_ITEMS];
+      const questions = [];
+
+      if (prioritizeWeak) {
+        // Leitner Weighted selection: level 0 = 5x weight, level 1 = 3x, level 2 = 1.5x, level 3 = 0.5x
+        const weightedPool = [];
+        pool.forEach(item => {
+          const lvl = appState.store.stats[item.hanja]?.level || 0;
+          let weight = 1;
+          if (lvl === 0) weight = 5;
+          else if (lvl === 1) weight = 3;
+          else if (lvl === 2) weight = 1.5;
+          else weight = 0.5;
+
+          const repeat = Math.max(1, Math.round(weight * 2));
+          for (let i = 0; i < repeat; i++) {
+            weightedPool.push(item);
+          }
+        });
+
+        // Sample with replacement if pool is small, or shuffle
+        for (let i = 0; i < targetCount; i++) {
+          const pick = weightedPool[Math.floor(Math.random() * weightedPool.length)];
+          questions.push(pick);
+        }
+      } else {
+        // Standard random sampling
+        const shuffled = [...pool].sort(() => Math.random() - 0.5);
+        while (questions.length < targetCount) {
+          if (shuffled.length > 0) {
+            questions.push(shuffled.pop());
+          } else {
+            // Pool exhausted, re-shuffle
+            const reshuffled = [...pool].sort(() => Math.random() - 0.5);
+            questions.push(reshuffled.pop());
+          }
+        }
+      }
+
+      return questions;
+    }
+
+    function renderCurrentQuizQuestion() {
+      const q = appState.quizSession[appState.quizIndex];
+      if (!q) return;
+
+      appState.quizAnswered = false;
+      appState.currentSelectedYinYang = null;
+      appState.currentSelectedElement = null;
+      appState.currentSelectedReading = null;
+
+      // Update Header & Progress
+      document.getElementById('quiz-counter').textContent = `(${appState.quizIndex + 1}/${appState.quizSession.length})`;
+      const progressPercent = ((appState.quizIndex) / appState.quizSession.length) * 100;
+      document.getElementById('quiz-progress-fill').style.width = `${progressPercent}%`;
+      document.getElementById('quiz-live-score').textContent = `${appState.quizCorrectCount}점`;
+
+      // Question card
+      document.getElementById('quiz-question-hanja').textContent = q.hanja;
+      const feedbackBox = document.getElementById('quiz-feedback-box');
+      feedbackBox.className = 'quiz-feedback-box';
+      feedbackBox.style.display = 'none';
+
+      // Buttons visibility
+      document.getElementById('btn-quiz-submit').style.display = 'block';
+      document.getElementById('btn-quiz-submit').disabled = true;
+      document.getElementById('btn-quiz-next').style.display = 'none';
+
+      // Build options: Unified 3-in-1 question (음독 + 음양 + 오행)
+      const container = document.getElementById('quiz-options-container');
+      container.innerHTML = '';
+
+      document.getElementById('quiz-prompt-text').textContent = '음독(읽기), 음양, 오행을 모두 선택하세요';
+
+      // 1. Reading group (4지선다)
+      const rdLabel = document.createElement('div');
+      rdLabel.className = 'option-group-label';
+      rdLabel.innerHTML = '<span>1. 음독 (한글 읽기) 선택</span><span id="label-sel-rd" style="color:var(--text-dim);">선택안됨</span>';
+      container.appendChild(rdLabel);
+
+      const rdRow = document.createElement('div');
+      rdRow.className = 'reading-row';
+      const choices = generateReadingChoices(q.reading, q.hanja);
+      choices.forEach(ch => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-btn';
+        btn.setAttribute('data-reading', ch);
+        btn.textContent = ch;
+        rdRow.appendChild(btn);
+      });
+      container.appendChild(rdRow);
+
+      // 2. Yin-Yang group
+      const yyLabel = document.createElement('div');
+      yyLabel.className = 'option-group-label';
+      yyLabel.style.marginTop = '4px';
+      yyLabel.innerHTML = '<span>2. 음양 선택</span><span id="label-sel-yy" style="color:var(--text-dim);">선택안됨</span>';
+      container.appendChild(yyLabel);
+
+      const yyRow = document.createElement('div');
+      yyRow.className = 'yinyang-row';
+      yyRow.innerHTML = `
+        <button class="choice-btn" data-yy="양">☀️ 양 (陽)</button>
+        <button class="choice-btn" data-yy="음">🌙 음 (陰)</button>
+      `;
+      container.appendChild(yyRow);
+
+      // 3. Elements group
+      const elemLabel = document.createElement('div');
+      elemLabel.className = 'option-group-label';
+      elemLabel.style.marginTop = '4px';
+      elemLabel.innerHTML = '<span>3. 오행 선택</span><span id="label-sel-elem" style="color:var(--text-dim);">선택안됨</span>';
+      container.appendChild(elemLabel);
+
+      const elemRow = document.createElement('div');
+      elemRow.className = 'elements-row';
+      ['목', '화', '토', '금', '수'].forEach(el => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-btn elem-btn';
+        btn.setAttribute('data-elem', el);
+        btn.innerHTML = `<span>${el}</span><span class="elem-btn-sub">(${ELEMENT_META[el].hanja})</span>`;
+        elemRow.appendChild(btn);
+      });
+      container.appendChild(elemRow);
+
+      // Bind choice events
+      rdRow.querySelectorAll('.choice-btn').forEach(b => {
+        b.addEventListener('click', () => {
+          if (appState.quizAnswered) return;
+          triggerHaptic('tap');
+          rdRow.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('selected'));
+          b.classList.add('selected');
+          appState.currentSelectedReading = b.dataset.reading;
+          document.getElementById('label-sel-rd').textContent = b.dataset.reading;
+          checkQuizReady();
+        });
+      });
+
+      yyRow.querySelectorAll('.choice-btn').forEach(b => {
+        b.addEventListener('click', () => {
+          if (appState.quizAnswered) return;
+          triggerHaptic('tap');
+          yyRow.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('selected'));
+          b.classList.add('selected');
+          appState.currentSelectedYinYang = b.dataset.yy;
+          document.getElementById('label-sel-yy').textContent = b.dataset.yy;
+          checkQuizReady();
+        });
+      });
+
+      elemRow.querySelectorAll('.choice-btn').forEach(b => {
+        b.addEventListener('click', () => {
+          if (appState.quizAnswered) return;
+          triggerHaptic('tap');
+          elemRow.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('selected'));
+          b.classList.add('selected');
+          appState.currentSelectedElement = b.dataset.elem;
+          document.getElementById('label-sel-elem').textContent = b.dataset.elem;
+          checkQuizReady();
+        });
+      });
+    }
+
+    function generateReadingChoices(correctReading, hanja) {
+      let pool = ALL_ITEMS;
+      if (hanja) {
+        const isTiangan = TIANGAN.some(t => t.hanja === hanja);
+        pool = isTiangan ? TIANGAN : DIJI;
+      }
+      const allReadings = [...new Set(pool.map(i => i.reading))];
+      const distractors = allReadings.filter(r => r !== correctReading).sort(() => Math.random() - 0.5).slice(0, 3);
+      return [correctReading, ...distractors].sort(() => Math.random() - 0.5);
+    }
+
+    function checkQuizReady() {
+      const ready = appState.currentSelectedReading && 
+                    appState.currentSelectedYinYang && 
+                    appState.currentSelectedElement;
+      document.getElementById('btn-quiz-submit').disabled = !ready;
+    }
+
+    /* Quiz Submission & Evaluation */
+    function submitQuizAnswer() {
+      if (appState.quizAnswered) return;
+      appState.quizAnswered = true;
+
+      const q = appState.quizSession[appState.quizIndex];
+      const stat = appState.store.stats[q.hanja];
+      const feedbackBox = document.getElementById('quiz-feedback-box');
+
+      const isCorrect = (appState.currentSelectedReading === q.reading) &&
+                        (appState.currentSelectedYinYang === q.yinyang) &&
+                        (appState.currentSelectedElement === q.element);
+
+      // Update statistics
+      if (isCorrect) {
+        stat.correct = (stat.correct || 0) + 1;
+        stat.level = Math.min(3, (stat.level || 0) + 1);
+        appState.quizCorrectCount++;
+        triggerHaptic('correct');
+      } else {
+        stat.wrong = (stat.wrong || 0) + 1;
+        stat.level = 0; // Reset Leitner level on error
+        appState.quizMissedList.push({
+          hanja: q.hanja,
+          reading: q.reading,
+          yinyang: q.yinyang,
+          element: q.element,
+          userSelected: {
+            yy: appState.currentSelectedYinYang,
+            elem: appState.currentSelectedElement,
+            reading: appState.currentSelectedReading
+          }
+        });
+        triggerHaptic('wrong');
+      }
+
+      // Daily count increment
+      const todayKey = getTodayKey();
+      appState.store.dailyCount[todayKey] = (appState.store.dailyCount[todayKey] || 0) + 1;
+      saveStore();
+
+      // UI Feedback Rendering
+      const submitBtn = document.getElementById('btn-quiz-submit');
+      const nextBtn = document.getElementById('btn-quiz-next');
+      submitBtn.style.display = 'none';
+      nextBtn.style.display = 'block';
+
+      // Highlight options
+      highlightQuizOptions(q, isCorrect);
+
+      if (isCorrect) {
+        feedbackBox.textContent = `🎉 완벽한 정답입니다! (${q.hanja} = ${q.reading} · ${q.yinyang} · ${q.element})`;
+        feedbackBox.className = 'quiz-feedback-box correct';
+        feedbackBox.style.display = 'block';
+
+        // Auto-advance after 800ms for correct answer if user doesn't tap next
+        appState.autoAdvanceTimer = setTimeout(() => {
+          if (appState.quizAnswered && document.getElementById('view-quiz').classList.contains('active')) {
+            proceedToNextQuiz();
+          }
+        }, 850);
+      } else {
+        // Clear any timer; user MUST tap Next to proceed and study the mistake
+        if (appState.autoAdvanceTimer) clearTimeout(appState.autoAdvanceTimer);
+        
+        feedbackBox.innerHTML = `
+          ❌ 오답입니다!<br>
+          <span style="font-weight: 700; color: var(--text-main);">정답: [${q.reading}] · [${q.yinyang}] · [${q.element}] (${q.hanja})</span>
+        `;
+        feedbackBox.className = 'quiz-feedback-box wrong';
+        feedbackBox.style.display = 'block';
+      }
+    }
+
+    function highlightQuizOptions(q, isCorrect) {
+      document.querySelectorAll('.reading-row .choice-btn').forEach(b => {
+        if (b.dataset.reading === q.reading) {
+          b.classList.add('is-correct');
+        } else if (b.classList.contains('selected') && !isCorrect) {
+          b.classList.add('is-wrong');
+        }
+      });
+
+      document.querySelectorAll('.yinyang-row .choice-btn').forEach(b => {
+        if (b.dataset.yy === q.yinyang) {
+          b.classList.add('is-correct');
+        } else if (b.classList.contains('selected') && !isCorrect) {
+          b.classList.add('is-wrong');
+        }
+      });
+
+      document.querySelectorAll('.elements-row .choice-btn').forEach(b => {
+        if (b.dataset.elem === q.element) {
+          b.classList.add('is-correct');
+        } else if (b.classList.contains('selected') && !isCorrect) {
+          b.classList.add('is-wrong');
+        }
+      });
+    }
+
+    function proceedToNextQuiz() {
+      if (appState.autoAdvanceTimer) clearTimeout(appState.autoAdvanceTimer);
+      
+      if (appState.quizIndex < appState.quizSession.length - 1) {
+        appState.quizIndex++;
+        renderCurrentQuizQuestion();
+      } else {
+        renderQuizResult();
+      }
+    }
+
+    /* Quiz Result View */
+    function renderQuizResult() {
+      const total = appState.quizSession.length;
+      const correct = appState.quizCorrectCount;
+      const pct = Math.round((correct / total) * 100);
+
+      document.getElementById('result-score-title').textContent = `${correct} / ${total} (${pct}%)`;
+
+      let icon = '🏆';
+      let msg = '완벽합니다! 음양오행을 완전히 통달하셨네요!';
+      if (pct < 60) {
+        icon = '🌱';
+        msg = '조금 더 연습이 필요해요! 오답 복습을 통해 실력을 다져보세요.';
+      } else if (pct < 90) {
+        icon = '⭐';
+        msg = '훌륭해요! 조금만 더 반복하면 마스터할 수 있습니다!';
+      }
+
+      document.getElementById('result-icon').textContent = icon;
+      document.getElementById('result-score-msg').textContent = msg;
+
+      // Missed List Rendering
+      const missedContainer = document.getElementById('result-missed-list');
+      missedContainer.innerHTML = '';
+
+      if (appState.quizMissedList.length === 0) {
+        document.getElementById('result-missed-header').style.display = 'none';
+        document.getElementById('btn-result-retry-missed').style.display = 'none';
+        const emptyMsg = document.createElement('div');
+        emptyMsg.style.padding = '16px';
+        emptyMsg.style.textAlign = 'center';
+        emptyMsg.style.color = 'var(--correct-color)';
+        emptyMsg.textContent = '모든 문제를 맞히셨습니다! 틀린 글자가 없습니다. 🎉';
+        missedContainer.appendChild(emptyMsg);
+      } else {
+        document.getElementById('result-missed-header').style.display = 'block';
+        document.getElementById('btn-result-retry-missed').style.display = 'block';
+
+        appState.quizMissedList.forEach(m => {
+          const itemDiv = document.createElement('div');
+          itemDiv.style.background = 'var(--bg-surface)';
+          itemDiv.style.border = '1px solid var(--border-subtle)';
+          itemDiv.style.borderRadius = 'var(--radius-md)';
+          itemDiv.style.padding = '12px 14px';
+          itemDiv.style.display = 'flex';
+          itemDiv.style.alignItems = 'center';
+          itemDiv.style.justifyContent = 'space-between';
+
+          let userSelText = '';
+          if (m.userSelected) {
+            const parts = [];
+            if (m.userSelected.reading) parts.push(m.userSelected.reading);
+            if (m.userSelected.yy) parts.push(m.userSelected.yy);
+            if (m.userSelected.elem) parts.push(m.userSelected.elem);
+            if (parts.length > 0) {
+              userSelText = `<div style="font-size:0.75rem; color:var(--wrong-color); margin-top:2px;">내 선택: ${parts.join(' · ')}</div>`;
+            }
+          }
+
+          itemDiv.innerHTML = `
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span style="font-family:var(--font-hanja); font-size:1.8rem; font-weight:700;">${m.hanja}</span>
+              <div>
+                <div style="font-weight:700;">${m.reading}</div>
+                <div style="font-size:0.8rem; color:var(--text-muted);">
+                  정답: <span style="color:${m.yinyang === '양' ? 'var(--color-yang)' : 'var(--color-yin)'}">${m.yinyang}</span> · 
+                  <span style="color:${ELEMENT_META[m.element].color}">${m.element}(${ELEMENT_META[m.element].hanja})</span>
+                </div>
+                ${userSelText}
+              </div>
+            </div>
+            <span class="leitner-badge leitner-0">0단계 복습필요</span>
+          `;
+          missedContainer.appendChild(itemDiv);
+        });
+      }
+
+      showView('view-result');
+    }
+
+
+    /* ----------------------------------------------------
+       8. Review Mode Logic (Leitner 0~3)
+       ---------------------------------------------------- */
+    function startReviewMode() {
+      // Find weak characters (level < 3 or wrong > 0)
+      const weakItems = ALL_ITEMS.filter(item => {
+        const s = appState.store.stats[item.hanja];
+        return (s.wrong > 0 && s.level < 3) || s.level === 0;
+      });
+
+      if (weakItems.length === 0) {
+        alert("현재 취약하거나 복습이 필요한 글자가 없습니다! 모든 글자가 마스터 단계입니다. 👍");
+        startQuizMode(ALL_ITEMS, true);
+        return;
+      }
+
+      startQuizMode(weakItems, true);
+    }
+
+
+    /* ----------------------------------------------------
+       9. Statistics View Logic
+       ---------------------------------------------------- */
+    let currentStatsFilter = 'all';
+
+    function renderStatsView() {
+      let totalSolved = 0;
+      let totalCorrect = 0;
+      let mastered = 0;
+
+      ALL_ITEMS.forEach(item => {
+        const s = appState.store.stats[item.hanja];
+        totalSolved += (s.correct + s.wrong);
+        totalCorrect += s.correct;
+        if (s.level >= 3) mastered++;
+      });
+
+      const overallRate = totalSolved > 0 ? Math.round((totalCorrect / totalSolved) * 100) : 0;
+      document.getElementById('stats-total-solved').textContent = totalSolved;
+      document.getElementById('stats-total-rate').textContent = `${overallRate}%`;
+      document.getElementById('stats-mastered-count').textContent = `${mastered}/22`;
+
+      // TOP 5 Missed
+      const sortedByWrong = [...ALL_ITEMS]
+        .map(i => ({ ...i, stats: appState.store.stats[i.hanja] }))
+        .filter(i => i.stats.wrong > 0)
+        .sort((a, b) => b.stats.wrong - a.stats.wrong)
+        .slice(0, 5);
+
+      const topMissedContainer = document.getElementById('stats-top-missed-list');
+      topMissedContainer.innerHTML = '';
+
+      if (sortedByWrong.length === 0) {
+        topMissedContainer.innerHTML = `
+          <div style="padding: 12px; background: var(--bg-surface); border-radius: var(--radius-md); text-align: center; color: var(--text-muted); font-size: 0.85rem;">
+            아직 오답 기록이 없습니다.
+          </div>
+        `;
+      } else {
+        sortedByWrong.forEach((item, idx) => {
+          const row = document.createElement('div');
+          row.style.background = 'var(--bg-surface)';
+          row.style.border = '1px solid var(--border-subtle)';
+          row.style.borderRadius = 'var(--radius-md)';
+          row.style.padding = '8px 12px';
+          row.style.display = 'flex';
+          row.style.alignItems = 'center';
+          row.style.justifyContent = 'space-between';
+
+          row.innerHTML = `
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="font-size:0.85rem; font-weight:700; color:var(--wrong-color); width:18px;">${idx + 1}</span>
+              <span style="font-family:var(--font-hanja); font-size:1.3rem; font-weight:700;">${item.hanja}</span>
+              <span style="font-size:0.9rem; font-weight:600;">${item.reading}</span>
+              <span style="font-size:0.75rem; color:${ELEMENT_META[item.element].color};">(${item.yinyang}·${item.element})</span>
+            </div>
+            <div style="font-size:0.82rem; font-weight:700; color:var(--wrong-color);">
+              ${item.stats.wrong}회 오답
+            </div>
+          `;
+          topMissedContainer.appendChild(row);
+        });
+      }
+
+      renderStatsTable();
+    }
+
+    function renderStatsTable() {
+      const tbody = document.getElementById('stats-table-body');
+      tbody.innerHTML = '';
+
+      let list = ALL_ITEMS;
+      if (currentStatsFilter === 'tiangan') list = TIANGAN;
+      if (currentStatsFilter === 'diji') list = DIJI;
+
+      list.forEach(item => {
+        const s = appState.store.stats[item.hanja];
+        const attempts = s.correct + s.wrong;
+        const rate = attempts > 0 ? Math.round((s.correct / attempts) * 100) : 0;
+        const lvl = s.level || 0;
+
+        let levelText = `${lvl}단계`;
+        if (lvl === 3) levelText = '외움 (마스터)';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <div class="hanja-cell">
+              <span>${item.hanja}</span>
+              <span style="font-family:var(--font-sans); font-size:0.85rem; color:var(--text-muted);">(${item.reading})</span>
+            </div>
+          </td>
+          <td>
+            <span style="color:${item.yinyang === '양' ? 'var(--color-yang)' : 'var(--color-yin)'}; font-weight:600;">${item.yinyang}</span> · 
+            <span style="color:${ELEMENT_META[item.element].color}; font-weight:600;">${item.element}</span>
+          </td>
+          <td>
+            <strong>${attempts > 0 ? rate + '%' : '-'}</strong>
+            <span style="font-size:0.75rem; color:var(--text-dim); display:block;">(${s.correct}/${attempts})</span>
+          </td>
+          <td>
+            <span class="leitner-badge leitner-${lvl}">${levelText}</span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+
+    /* ----------------------------------------------------
+       10. Reference Modal Logic
+       ---------------------------------------------------- */
+    function renderReferenceSheet() {
+      const grid = document.getElementById('ref-grid-container');
+      grid.innerHTML = '';
+
+      ALL_ITEMS.forEach(item => {
+        const meta = ELEMENT_META[item.element];
+        const isTiangan = TIANGAN.some(t => t.hanja === item.hanja);
+        const card = document.createElement('div');
+        card.className = 'ref-card';
+        card.innerHTML = `
+          <div class="ref-hanja" style="color:var(--text-main);">${item.hanja}</div>
+          <div class="ref-meta">
+            <span style="font-weight:700;">${item.reading} (${isTiangan ? '천간' : '지지'})</span>
+            <span>
+              <span style="color:${item.yinyang === '양' ? 'var(--color-yang)' : 'var(--color-yin)'}; font-weight:600;">${item.yinyang}</span> · 
+              <span style="color:${meta.color}; font-weight:600;">${item.element}(${meta.hanja})</span>
+            </span>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+
+    /* ----------------------------------------------------
+       11. Event Listeners & Binding
+       ---------------------------------------------------- */
+    document.addEventListener('DOMContentLoaded', () => {
+      // Apply saved theme
+      applyTheme(appState.store.settings.theme);
+
+      // Home Scope Selector
+      const scopeBtns = document.querySelectorAll('#scope-selector .scope-btn');
+      scopeBtns.forEach(b => {
+        b.addEventListener('click', () => {
+          scopeBtns.forEach(btn => btn.classList.remove('active'));
+          b.classList.add('active');
+          appState.currentScope = b.dataset.scope;
+          triggerHaptic('tap');
+        });
+      });
+
+      // Home Buttons
+      document.getElementById('btn-start-quiz').addEventListener('click', () => {
+        triggerHaptic('tap');
+        startQuizMode();
+      });
+
+      document.getElementById('btn-start-card').addEventListener('click', () => {
+        triggerHaptic('tap');
+        startCardMode();
+      });
+
+      document.getElementById('btn-start-review').addEventListener('click', () => {
+        triggerHaptic('tap');
+        startReviewMode();
+      });
+
+      document.querySelectorAll('.btn-back-home').forEach(b => {
+        b.addEventListener('click', () => {
+          triggerHaptic('tap');
+          showView('view-home');
+        });
+      });
+
+      // Card Controls
+      document.getElementById('flashcard').addEventListener('click', flipCard);
+      document.getElementById('btn-card-flip').addEventListener('click', flipCard);
+      document.getElementById('btn-card-know').addEventListener('click', () => rateCard(true));
+      document.getElementById('btn-card-dontknow').addEventListener('click', () => rateCard(false));
+
+      document.getElementById('btn-card-next').addEventListener('click', () => {
+        if (appState.cardIndex < appState.cardList.length - 1) {
+          appState.cardIndex++;
+          renderCurrentCard();
+          triggerHaptic('tap');
+        }
+      });
+
+      document.getElementById('btn-card-prev').addEventListener('click', () => {
+        if (appState.cardIndex > 0) {
+          appState.cardIndex--;
+          renderCurrentCard();
+          triggerHaptic('tap');
+        }
+      });
+
+      document.getElementById('btn-card-shuffle').addEventListener('click', () => {
+        triggerHaptic('tap');
+        appState.cardList.sort(() => Math.random() - 0.5);
+        appState.cardIndex = 0;
+        renderCurrentCard();
+      });
+
+      // Quiz Controls
+      document.getElementById('btn-quiz-submit').addEventListener('click', submitQuizAnswer);
+      document.getElementById('btn-quiz-next').addEventListener('click', () => {
+        triggerHaptic('tap');
+        proceedToNextQuiz();
+      });
+
+      document.getElementById('btn-quiz-exit').addEventListener('click', () => {
+        if (confirm("퀴즈를 중단하고 홈으로 나가시겠습니까?")) {
+          showView('view-home');
+        }
+      });
+
+      // Quiz Result Controls
+      document.getElementById('btn-result-retry-missed').addEventListener('click', () => {
+        const missedHanjas = appState.quizMissedList.map(m => m.hanja);
+        const missedItems = ALL_ITEMS.filter(i => missedHanjas.includes(i.hanja));
+        if (missedItems.length > 0) {
+          startQuizMode(missedItems, true);
+        }
+      });
+
+      document.getElementById('btn-result-new-quiz').addEventListener('click', () => {
+        startQuizMode();
+      });
+
+      // Header Navigation Icons
+      document.getElementById('btn-open-stats').addEventListener('click', () => {
+        renderStatsView();
+        showView('view-stats');
+      });
+
+      document.getElementById('btn-open-settings').addEventListener('click', () => {
+        // Sync inputs with settings
+        document.getElementById('setting-session-size').value = appState.store.settings.sessionSize || '20';
+        document.getElementById('setting-theme').value = appState.store.settings.theme || 'auto';
+        document.getElementById('setting-vibrate').checked = appState.store.settings.vibrate !== false;
+        showView('view-settings');
+      });
+
+      document.getElementById('btn-open-ref').addEventListener('click', () => {
+        renderReferenceSheet();
+        document.getElementById('modal-ref-sheet').classList.add('active');
+      });
+
+      document.getElementById('btn-ref-close').addEventListener('click', () => {
+        document.getElementById('modal-ref-sheet').classList.remove('active');
+      });
+      document.getElementById('btn-ref-confirm').addEventListener('click', () => {
+        document.getElementById('modal-ref-sheet').classList.remove('active');
+      });
+
+      // Settings Inputs Change
+      document.getElementById('setting-session-size').addEventListener('change', (e) => {
+        appState.store.settings.sessionSize = parseInt(e.target.value, 10);
+        saveStore();
+      });
+
+      document.getElementById('setting-theme').addEventListener('change', (e) => {
+        appState.store.settings.theme = e.target.value;
+        applyTheme(e.target.value);
+        saveStore();
+      });
+
+      document.getElementById('setting-vibrate').addEventListener('change', (e) => {
+        appState.store.settings.vibrate = e.target.checked;
+        saveStore();
+      });
+
+      // Stats Table Filters
+      ['all', 'tiangan', 'diji'].forEach(f => {
+        const btn = document.getElementById(`stats-filter-${f}`);
+        if (btn) {
+          btn.addEventListener('click', () => {
+            currentStatsFilter = f;
+            renderStatsTable();
+          });
+        }
+      });
+
+      // Reset Modal Logic
+      document.getElementById('btn-reset-data').addEventListener('click', () => {
+        document.getElementById('modal-reset-confirm').classList.add('active');
+      });
+
+      document.getElementById('btn-modal-cancel').addEventListener('click', () => {
+        document.getElementById('modal-reset-confirm').classList.remove('active');
+      });
+
+      document.getElementById('btn-modal-confirm').addEventListener('click', () => {
+        appState.store = getDefaultStore();
+        saveStore();
+        document.getElementById('modal-reset-confirm').classList.remove('active');
+        renderStatsView();
+        alert("모든 학습 기록이 초기화되었습니다.");
+      });
+
+      // Initialize Home Dashboard
+      updateHomeDashboard();
+
+      // PWA Service Worker Registration
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./service-worker.js')
+            .then(reg => {
+              console.log('ServiceWorker registered:', reg.scope);
+            })
+            .catch(err => {
+              console.warn('ServiceWorker registration failed:', err);
+            });
+        });
+      }
+
+      // PWA Install Prompt Handler
+      const pwaInstallBtn = document.getElementById('btn-pwa-install');
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        appState.deferredPrompt = e;
+        pwaInstallBtn.style.display = 'block';
+      });
+
+      pwaInstallBtn.addEventListener('click', async () => {
+        if (!appState.deferredPrompt) return;
+        appState.deferredPrompt.prompt();
+        const { outcome } = await appState.deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          pwaInstallBtn.style.display = 'none';
+        }
+        appState.deferredPrompt = null;
+      });
+    });
+  </script>
+</body>
+</html>
